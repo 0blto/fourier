@@ -1,4 +1,4 @@
-const spoken = 'http://www.wolframalpha.com/api/v1/spoken-json.jsp'
+const spoken = 'https://www.wolframalpha.com/api/v1/spoken-json.jsp'
 
 
 
