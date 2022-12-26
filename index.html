@@ -238,9 +238,9 @@
     <script src="index.js"></script>
 
     
-    <py-script output="st">
-        print("Hello world! " * 10)
-        display(myElement, target="st")
+
+    <py-script>
+        Element("st").element.innerhtml = "Hello world! " * 10
     </py-script>
     
 </body>
