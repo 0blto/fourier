@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
+    <py-env>
+        - wolframalpha
+    </py-env>
+
 <style>
     body {
         color: #EEEEEE;
@@ -236,6 +240,7 @@
     
     <py-script output="st">
         print("Hello world! " * 10)
+        display(myElement, target="st")
     </py-script>
     
 </body>
