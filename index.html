@@ -171,7 +171,7 @@
     <title>Fourier</title>
     <py-config>
         packages = [
-          "numpy",
+          "wolframalpha",
         ]
         </py-config>
 </head>
@@ -242,9 +242,16 @@
 
     
     <py-script>
-        import numpy as np
-        res = np.random.randn(1000)
-        Element("st").element.innerHTML = ''.join(res)
+        import wolframalpha
+
+        api = wolframalpha.Client("L48TK6-9RVE7WV446")
+
+        search = "what is the meaning of life?"
+
+        res = api.query(search)
+        answer = next(res.results).text
+
+        display(answer, target="st")
     </py-script>
     
     
