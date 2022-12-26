@@ -5,10 +5,7 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
-    <py-env>
-        - numpy
-        - requests
-  </py-env>
+    
 
 <style>
     body {
@@ -172,6 +169,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fourier</title>
+    <py-env>
+        - numpy
+        - requests
+    </py-env>
 </head>
 <body>
 
@@ -240,7 +241,8 @@
 
     
     <py-script>
-        res = "Hello " * 10
+        import numpy as np
+        res = np.random.randn(1000)
         Element("st").element.innerHTML = ''.join(res)
     </py-script>
     
