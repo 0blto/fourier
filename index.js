@@ -1,3 +1,5 @@
+const spoken = 'http://www.wolframalpha.com/api/v1/spoken-json.jsp'
+
 
 
 const result = document.querySelector('.result'),
@@ -28,7 +30,7 @@ close.onclick = function() {
 area.onclick = function() {
     pop_down()
 }
-/*
+
 document.querySelectorAll('input').forEach(item => {
     item.oninput = () => {
         step.innerHTML = item.value
@@ -36,4 +38,17 @@ document.querySelectorAll('input').forEach(item => {
         result.style.visibility = 'visible'
     }
 })
-*/
+
+document.getElementById('submit').addEventListener('click', () => {
+    const queryParams = new URLSearchParams({
+        appid: "L48TK6-9RVE7WV446",
+        input: 'what is the meaning of life?'
+    })
+    const apiUrl = spoken + '?' + queryParams.toString()
+    const header = new Headers({ "Access-Control-Allow-Origin": "*" })
+    console.log(apiUrl)
+    fetch(apiUrl,{
+        headers: header
+    }).then(response => console.log(response))
+    
+})
