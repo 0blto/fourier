@@ -2,167 +2,15 @@
 <html lang="en">
 <head>
 
-    
+    <py-config>
+        packages = [
+          "matplotlib",
+          "sympy",
+        ]
+    </py-config>
 
-<style>
-    body {
-        color: #EEEEEE;
-        width: 100%;
-        margin: auto;
-        box-sizing: border-box;
-        position: relative;
-        min-height: 100vh;
-        overflow-x: hidden;
-        background-color: #393E46;
-    }
-
-    button {
-        padding: 1vh;
-        font-size: 2vh;
-        background-color: transparent;
-        color: #EEEEEE;
-        border: 0.2vh solid #EEEEEE;
-        border-radius: 1vh;
-    }
-
-    button:hover {
-        background-color: #00ADB5;
-        border-color: #00ADB5;
-    }
-
-    .header {
-        width: 100%;
-        margin: 0;
-        height: 5vh;
-        text-align: center;
-        padding: 2vh;
-        font-size: 3vh;
-        background-color: #222831;
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .content {
-        padding: 15%;
-    }
-
-    .block {
-        width: 100%;
-        margin: auto;
-        padding: 3vh;
-        border: 0.3vh solid #EEEEEE;
-        border-radius: 3vh;
-    }
-
-    .expression {
-        background-color: #222831;
-        font-size: 2vh;
-        text-align: center;
-    }
-
-    .system {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-    }
-
-    .function {
-        margin: 1vh;
-    }
-
-    .warn {
-        color: red;
-    }
-
-    input {
-        width: 10%;
-        height: 2vh;
-        background-color: transparent;
-        border: 0.2vh solid #EEEEEE;
-        border-radius: 1vh;
-        color: #EEEEEE;
-        transition: 0.3s;
-    }
-
-    input:focus {
-        outline: none;
-        border-color: #00ADB5;
-        color: #00ADB5;
-    }
-
-
-
-    .result {
-        background-color: #222831;
-        margin-top: 2vh;
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .step {
-        
-    }
-
-    .footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        text-align: center;
-        padding: 2em;
-        font-size: 2vh;
-        background-color: #222831;
-    }
-
-    .popup {
-        z-index: 2;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.8);
-        visibility: hidden;
-        opacity: 0;
-        overflow-x: hidden;
-    }
-
-    .popup_body {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2vh, 1vh;
-        
-    }
-
-    .popup_content {
-        position: relative;
-        background-color: #fff;
-        color: black;
-        max-width: 70vh;
-        padding: 2vh;
-        
-    }
-
-    .popup_close {
-        position: absolute;
-        top: 1vh;
-        right: 1vh;
-        text-decoration: none;
-        color: black;
-    }
-
-    .popup_area {
-        position: absolute;
-        width: 100vw;
-        height: 100vh;
-        top: 0;
-        left: 0;
-    }
-
-    </style>
-
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fourier</title>
@@ -171,65 +19,28 @@
 
     <div class="header">
         Fourier
-        <button onclick="pop_up()">Documentation</button>
     </div>
 
-    <div class="popup">
-        <a class="popup_area"></a>
-        <div class="popup_body">
-            <div class="popup_content">
-                <a class="popup_close">X</a>
-                <h3>Documentation</h3>
-                <p>There will be documentalion</p> <br>
-                <p> Lorem ipsum dolor, sit amet 
-                    consectetur adipisicing elit. 
-                    Repellendus quidem cupiditate 
-                    repudiandae consequuntur animi 
-                    quisquam dolorem, velit dicta, 
-                    voluptatibus cumque doloribus quae 
-                    itaque molestiae obcaecati modi 
-                    corrupti voluptatum commodi dolores? 
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus dolorem harum doloribus repudiandae magni! Culpa perferendis eaque libero dolorum nostrum voluptatum, ea porro at ullam omnis veritatis impedit exercitationem dignissimos! Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus provident officiis impedit explicabo, facere, beatae repellat accusamus error in, veritatis voluptates veniam odio commodi incidunt nihil adipisci at dolores sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, veniam quam beatae est possimus alias vitae, voluptates aliquam exercitationem porro quaerat, nam dolor impedit odit ipsam officia non ullam delectus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, earum aut. Illo eius eaque nemo odit libero, adipisci nihil ex sequi vel ratione quasi praesentium vitae, atque soluta sunt numquam! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis nam saepe fuga quasi vel animi soluta. Nostrum repellat iusto voluptate! Magni libero veritatis omnis corporis corrupti hic ipsa quos reiciendis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, veniam repellendus nostrum consequuntur culpa temporibus odio deserunt voluptate accusamus molestiae delectus debitis nesciunt hic quaerat aliquid obcaecati dolores distinctio excepturi. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus minus veniam fugiat excepturi voluptate tempore molestias magni! Officia, nisi accusantium recusandae assumenda veritatis tenetur earum voluptatum. Placeat iste explicabo consequatur? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex repellendus quos cum, ipsum sequi quidem debitis rem natus sapiente consequuntur, velit reprehenderit assumenda ducimus inventore earum tempora atque praesentium. Reiciendis? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa, saepe. Eius, eos. A tempora quibusdam repellendus, ipsum dolores repudiandae ipsa unde, deserunt in praesentium excepturi fugit ad vitae iusto soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt distinctio totam similique! Cum excepturi sit voluptates saepe, doloremque aut iusto sequi explicabo nesciunt earum quibusdam modi sapiente ad, voluptate rem. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, rerum. Alias corrupti, ducimus, magni, maiores laborum quidem placeat ratione recusandae necessitatibus voluptas molestiae pariatur. Necessitatibus quaerat quod dolore fugiat exercitationem? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Commodi, doloribus voluptas possimus repudiandae quasi nisi neque cumque odit natus iure facilis laudantium ducimus. Vero officiis, in quae quis dolorum consequatur. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non laboriosam fugit tenetur alias minus hic ipsum, voluptate dignissimos vitae atque quod, accusamus ducimus voluptates perferendis id corrupti repudiandae rem asperiores. Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi ut repellendus labore culpa fugiat, dolorum similique vitae aut, porro nam odit at, illum dolores quia placeat libero hic a corporis. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat excepturi quas praesentium iusto. Modi eum, quidem doloribus voluptates corrupti deleniti reiciendis sunt perferendis, ipsum necessitatibus quam aperiam esse rem consectetur. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident eos recusandae rem laudantium. Repellat perspiciatis voluptates libero non similique vitae dignissimos impedit quae explicabo laudantium praesentium quod, possimus beatae itaque. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, modi? Facilis, minima quam explicabo debitis rem inventore suscipit, fuga odio harum illo repudiandae quibusdam hic nisi nam, nobis facere eum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, minus id neque dignissimos adipisci eveniet illum iusto accusantium, porro iste ab quia obcaecati doloremque saepe a? Pariatur alias delectus sit. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum mollitia eligendi molestias accusantium alias et nemo aliquid animi repellat optio, natus vero ipsa, similique ad nesciunt ipsam voluptatem iste possimus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat ullam alias, rerum sunt odio porro facilis rem repellat magnam ipsam, eius, quisquam incidunt nostrum eveniet nulla ab praesentium nobis reprehenderit. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni asperiores saepe molestiae culpa corporis at ipsa ad, quo mollitia tenetur facere voluptatem architecto, sint inventore! Impedit perferendis dolor ea vitae. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Excepturi, illum cumque aliquam eius optio nam perspiciatis fugit. Labore temporibus totam ad consectetur atque asperiores. Ab temporibus nulla illum quaerat voluptatem? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas eligendi et id aperiam tenetur, at autem architecto dolores repellendus quia nesciunt doloribus, qui fugiat pariatur! Beatae obcaecati eveniet aliquid nisi! Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus asperiores error perferendis. Aliquid nostrum nulla iste, voluptatum commodi qui laborum suscipit, excepturi amet necessitatibus adipisci corporis at hic deserunt ullam?</p>
-            </div>
-        </div>
+    <div>
+        <input type="text">
     </div>
 
-    <div class="content">
-        <div class="expression block">
-            <div class="system">
-                <div class="function">
-                    <input type="text" id="request"> , 
-                    <input type="text">
-                    <span> < x < </span>
-                    <input type="text"> 
-                </div>
-                <div class="function">
-                    <input type="text"> , 
-                    <input type="text">
-                    <span> < x < </span>
-                    <input type="text"> 
-                </div>
-            </div>
-            <br>
-            <label class="warn">Введите функции и диапазоны корректно</label>
-            <br> <br>
-            <button id="submit">Check</button>
-        </div>
-    
-        <div class="result block">
-            <div class="step" id="st">
-                
-            </div>
-        </div>
+    <div class="output">
+
     </div>
 
-    <div class="footer">
-        Author: Погрибняк Иван
-    </div>
+    <py-script>
+        from sympy import parse_expr, fourier_series, latex
+        from sympy.parsing.sympy_parser import standard_transformations, implicit_multiplication_application, convert_xor
+        import matplotlib.pyplot as plt
 
+        s = fourier_series(x**2, (x, -pi, pi))
+        s.truncate()
+        display(s, target="output")
+
+    </py-script>
     
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="index.js"></script>    
     
 </body>
