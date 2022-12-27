@@ -32,6 +32,7 @@
     <py-script>
         from sympy import parse_expr, fourier_series, latex
         from sympy.parsing.sympy_parser import standard_transformations, implicit_multiplication_application, convert_xor
+        from sympy.abc import x
         import matplotlib.pyplot as plt
 
         s = fourier_series(x**2, (x, -pi, pi))
