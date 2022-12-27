@@ -38,11 +38,19 @@
         s = fourier_series(x**2, (x, -pi, pi))
         s = latex(s.truncate(3))
         display(s, target="output")
-        MathJax.typeset()
+        
     </py-script>
     
+
+
+
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="index.js"></script>    
+
+
+    <script>
+        setInterval(()=>{MathJax.typeset()}, 10)
+    </script>
     
 </body>
 </html>
