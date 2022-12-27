@@ -36,8 +36,8 @@
         import matplotlib.pyplot as plt
 
         s = fourier_series(x**2, (x, -pi, pi))
-        s = latex(s.truncate(3))
-        display("$$" + s + "$$", target="output")
+        s = "$$" + latex(s.truncate(3)) + "$$"
+        display(, target="output")
         mathjax.typeset()
         
     </py-script>
