@@ -36,7 +36,7 @@
         import matplotlib.pyplot as plt
 
         s = fourier_series(x**2, (x, -pi, pi))
-        s = s.truncate()
+        s = latex(s.truncate(3))
         display(s, target="output")
 
     </py-script>
