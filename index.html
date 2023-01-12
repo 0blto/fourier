@@ -6,8 +6,163 @@
         packages = [
           "matplotlib",
           "sympy",
+          "numpy"
         ]
     </py-config>
+
+    <style>
+    body {
+        background-color: #393E46;
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+        height: 100vh;
+        overflow-y: hidden;
+        position: relative;
+        color: #EEEEEE;
+    } 
+    .output {
+        overflow-x: auto;
+    }
+    .header {
+        margin: auto;
+        background-color: #222831;
+        padding: 1vh;
+        font-size: 3vh;
+    }
+
+    input {
+        font-size: 2vh;
+        padding: 1vh;
+        background-color: transparent;
+        margin: auto;
+        border: 0.3vh solid #EEEEEE;
+        color: #EEEEEE;
+        transition: 0.3s;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #00ADB5;
+        color: #00ADB5;
+    }
+
+    .minmax-in {
+        max-width: 20%;
+    }
+    .input_space {
+        width: 50%;
+        margin: auto;
+        margin-top: 40vh;
+        height: 20vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    #func {
+        width: 50%;
+    }
+
+    .minmax {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .popup {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .popup_body {
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px, 10px;
+    }
+
+    .popup_content {
+        position: relative;
+        background-color: #222831;
+        color: #EEEEEE;
+        width: 80vw;
+        height: 80vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 2vh;
+        border: 0.5vh solid #00ADB5;
+        border-radius: 2vh;
+    }
+
+    .popup_close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-decoration: none;
+        color: #EEEEEE;
+    }
+
+    .popup_area {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    .plot-div {
+        text-align: center;
+        width: 100%;
+    }
+
+    .plot-div img {
+        max-width: 70%;
+        height: auto;
+    }
+
+    .slider {
+        position: relative;
+        height: 3em;
+    }
+
+    .but {
+        color: #222831;
+        border-radius: 0.5vh;
+        font-size: 2vh;
+        padding: 0.5vh;
+        background-color: #EEEEEE;
+        transition: 0.3s;
+    }
+
+    .but:hover, .but:focus {
+        background-color: #00ADB5;
+        color: #222831;
+        outline: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: rgb(29, 29, 29);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgb(44, 44, 44);
+        border-radius: 5px;
+        width: 10px;
+        border: 2px solid black;
+    }
+
+
+    </style>
 
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
@@ -18,39 +173,232 @@
 <body>
 
     <div class="header">
-        Fourier
+        <h3>Fourier</h3> 
+    </div>
+    
+    <div class="input_space">
+        <input type="text" id="func"> <br>
+        <div class="minmax">
+            <input class="minmax-in" type="text" id="min">
+            <span> < x < </span>
+            <input class="minmax-in" type="text" id="max"> 
+        </div>
+        <button id="test" class="but" type="button" onclick="process()"> <b>solve</b> </button>
     </div>
 
-    <div>
-        <input type="text">
+    <div class="popup">
+        <a class="popup_area"></a>
+        <div class="popup_body">
+            <div class="popup_content">
+                <a class="popup_close">X</a>
+                
+                <div id="fx" class="output"></div>
+                
+                <div id="a0" class="output"></div> <br>
+                
+                <div id="an" class="output"></div> <br>
+                
+                <div id="bn" class="output"></div> <br>
+                <h4>$$fourier$$</h4>
+                <div id="summary" class="output"></div> <br>
+                <div id="plot" class="plot-div"></div>
+                <div class="slider">
+                    <input type="text" id="get_val" value="3">
+                    <input type="range" min="3" max="20" value="3" step="1" id="roll" id="fader" style="width: 100%;">
+                </div>
+                <button id="submit" class="but"> <b>reconstruct</b> </button> <br>
+                
+            </div>
+        </div>
     </div>
 
-    <div id="output">
-
-    </div>
 
     <py-script>
-        from sympy import parse_expr, fourier_series, latex, pi
+        import re
+        from sympy import parse_expr, fourier_series, latex, pi, integrate, simplify, Sum, oo
         from sympy.parsing.sympy_parser import standard_transformations, implicit_multiplication_application, convert_xor
-        from sympy.abc import x
+        from sympy.abc import x, n
         import matplotlib.pyplot as plt
+        import numpy as np
 
-        s = fourier_series(x**2, (x, -pi, pi))
-        s = "$$" + latex(s.truncate(3)) + "$$"
-        display(, target="output")
-        mathjax.typeset()
+
+        
+
+        def simplifiyer(string):
+            string = re.sub(",.*", "", string)[1:].replace("sin(pi*n)", "0").replace("cos(pi*n)", "((-1)**n)")
+            for i in range(2, 11):
+                string = string.replace("sin(" + str(i) + "*pi*n)", "0").replace("cos(" + str(i) + "*pi*n)", "((-1)**n)")
+            return string
+
+        
+
+        def make_f():
+            func = parse_expr(Element("func").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            func_a0 = parse_expr('(1/pi)*(' + Element("func").value + ')', transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            func_an = parse_expr('(1/pi)*(' + Element("func").value + ')cos(nx)' , transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            func_bn = parse_expr('(1/pi)*(' + Element("func").value + ')sin(nx)' , transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            max = parse_expr(Element("max").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            min = parse_expr(Element("min").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            s = fourier_series(func, (x, min, max))
+            #s = s.truncate(parse_expr(Element("trunc").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,))))
+            
+            a0 = integrate(func_a0, (x, min, max))
+            
+
+            an_p = integrate(func_an, (x, min, max))
+            an = 0
+            if (len(an_p.args) > 0):
+                an = an_p.args[0]
+                an = parse_expr(simplifiyer(str(an)), transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+
+            bn_p = integrate(func_bn, (x, min, max))
+            bn = 0
+            if (len(bn_p.args) > 0):
+                bn = bn_p.args[0]
+                bn = parse_expr(simplifiyer(str(bn)), transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+
+            answer = a0/2 + Sum(simplify(parse_expr("(" + str(an) + ")" + "*cos(n*x)") + parse_expr("(" + str(bn) + ")" + "*sin(n*x)")), (n, 1, 2))
+            display(latex(simplify(str(func))), target="fx")
+            display(latex(simplify(a0)), target="a0")
+            display(latex(simplify(an)), target="an")
+            display(latex(simplify(bn)), target="bn")
+            display(latex(answer), target="summary")
+            plot()
+
+
+        def plot():
+            func = parse_expr(Element("func").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            max = parse_expr(Element("max").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            min = parse_expr(Element("min").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,)))
+            destination = [min, max]
+            s = fourier_series(func, (x, min, max))
+            s = s.truncate(parse_expr(Element("get_val").value, transformations=(standard_transformations + (implicit_multiplication_application,) + (convert_xor,))))
+            fig = plt.figure()
+            fig.patch.set_facecolor('#222831')
+            ax = fig.add_subplot(1, 1, 1)
+            ax.set_facecolor('#222831')
+            ax.spines['bottom'].set_color('white')
+            ax.spines['top'].set_color('white')
+            ax.spines['left'].set_color('white')
+            ax.spines['right'].set_color('white')
+            ax.xaxis.label.set_color('red')
+            ax.tick_params(axis='x', colors='white')
+            ax.tick_params(axis='y', colors='white')
+            ax.grid(which='major', color='white', linewidth=1)
+            
+            var = np.linspace(*[float(e.evalf()) for e in destination], 50)
+            plt.plot(var, [func.subs(x, var) for var in var], '#ea7500')
+            plt.plot(var, [s.subs(x, var) for var in var], '#0bda51')
+
+            ax.set_xlabel('x-axis', color='white')
+            ax.set_ylabel('y-axis', color='white')
+            ax.legend(['Function', 'Fourier'])
+            display(fig, target='plot')
+        
         
     </py-script>
     
 
 
 
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="index.js"></script>    
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>   
+
 
 
     <script>
-        setInterval(()=>{MathJax.typeset()}, 10)
+        //Variables
+        
+        const popup = document.querySelector(".popup"),
+            outs =  document.querySelectorAll('.output'),
+            popup_area = document.querySelector(".popup_area"),
+            popup_close = document.querySelector(".popup_close")
+
+
+    </script>
+
+    <script>
+        //CSS
+        
+        popup_close.onclick = function() {
+            document.getElementById('get_val').value = 3
+            roll.value = 3
+            blop_reg(false)
+        }
+
+        popup_area.onclick = function() {
+            document.getElementById('get_val').value = 3
+            roll.value = 3
+            blop_reg(false)
+        }
+        
+        function blop_reg(bool) {
+            popup.style.visibility = bool ? 'visible' : 'hidden'
+            popup.style.opacity = bool ? '1' : '0'
+        }
+
+        const roll = document.getElementById("roll")
+    
+        roll.oninput = function() {
+            document.getElementById('get_val').value = roll.value
+        }
+
+        document.getElementById('submit').addEventListener('click', () => {
+            plot_mk = pyscript.runtime.globals.get('plot')
+            document.getElementById('plot').innerHTML = ''
+            plot_mk()
+        })
+
+
+    </script>
+
+    <script>
+        async function process() {
+            outs.forEach(item => {
+                item.innerHTML = ''
+            })
+            let exec = pyscript.runtime.globals.get('make_f'),
+                plot = pyscript.runtime.globals.get('plot')
+
+            document.getElementById('plot').innerHTML = ''
+
+            exec()
+            update()
+            blop_reg(true)
+        }
+    </script>
+
+
+
+    <script>
+        function update() {
+            setTimeout(() => {
+                outs.forEach(item => {
+                    let prefix = ''
+                    switch(item.id) {
+                        case 'a0':
+                            prefix='a_0='
+                            break
+                        case 'an':
+                            prefix='a_n='
+                            break
+                        case 'bn':
+                            prefix='b_n='
+                            break
+                        case 'summary':
+                            prefix='f(x)='
+                            break
+                        case 'fx':
+                            prefix='f(x)='
+                            break
+                    }
+                    if (!item.innerText.startsWith('$$')) {
+                        item.innerText = '$$' + prefix + item.innerText.toString() + '$$'
+                    }   
+                })
+
+                MathJax.typeset()
+            }, 10)
+        }   
     </script>
     
 </body>
